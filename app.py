@@ -274,27 +274,27 @@ Review: {review.review_text}
         print(f"Email send failed: {e}")
 
 
-# @app.route('/run-seed-x7k29')  # random naam rakha hai taake koi guess na kare
-# def run_seed_secret():
-#     from bulk_seed import PRODUCTS
-#     added = 0
-#     for item in PRODUCTS:
-#         existing = Product.query.filter_by(name=item["name"]).first()
-#         if existing:
-#             continue  # already hai, dobara add nahi karega
-#         product = Product(
-#             name=item["name"], category=item["category"],
-#             description=item["description"] or None, price=item["price"],
-#             size=item["size"], delivery_format=item["delivery_format"],
-#             is_available=True
-#         )
-#         db.session.add(product)
-#         db.session.flush()
-#         for position, fname in enumerate(item["images"]):
-#             db.session.add(ProductImage(product_id=product.id, image_filename=fname, position=position))
-#         added += 1
-#     db.session.commit()
-#     return f"✅ {added} products added (skipped duplicates)."
+@app.route('/run-seed-x7k29')  # random naam rakha hai taake koi guess na kare
+def run_seed_secret():
+    from bulk_seed import PRODUCTS
+    added = 0
+    for item in PRODUCTS:
+        existing = Product.query.filter_by(name=item["name"]).first()
+        if existing:
+            continue  # already hai, dobara add nahi karega
+        product = Product(
+            name=item["name"], category=item["category"],
+            description=item["description"] or None, price=item["price"],
+            size=item["size"], delivery_format=item["delivery_format"],
+            is_available=True
+        )
+        db.session.add(product)
+        db.session.flush()
+        for position, fname in enumerate(item["images"]):
+            db.session.add(ProductImage(product_id=product.id, image_filename=fname, position=position))
+        added += 1
+    db.session.commit()
+    return f"✅ {added} products added (skipped duplicates)."
     
 if __name__ == '__main__':
     app.run(debug=True)
