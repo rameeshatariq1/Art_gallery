@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} — Mishi Creates{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="gallery">
+        <div class="gallery-main">
+            <img id="mainImage" src="{{ url_for('static', filename='images/' + product.images[0].image_filename) }}" alt="{{ product.name }}">
+        </div>
+        {% if product.images | length > 1 %}
+        <div class="gallery-thumbs">
+            {% for img in product.images %}
+            <img src="{{ url_for('static', filename='images/' + img.image_filename) }}"
+                 class="{{ 'active' if loop.first else '' }}"
+                 onclick="document.getElementById('mainImage').src=this.src; document.querySelectorAll('.gallery-thumbs img').forEach(function(t){t.classList.remove('active')}); this.classList.add('active');">
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="product-detail-info">
+        <p class="category-tag">{{ product.category }}</p>
+        <h1>{{ product.name }}</h1>
+        <p class="price">Rs. {{ product.price }}</p>
+        <p class="size"><strong>Size:</strong> {{ product.size }}</p>
+
+        {% if product.description %}
+        <p class="description">{{ product.description }}</p>
+        {% endif %}
+
+        <p class="availability {{ 'available' if product.is_available else 'unavailable' }}">
+            {{ 'In Stock' if product.is_available else 'Sold Out' }}
+        </p>
+
+        {% if product.is_available %}
+        <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+            {% if product.available_formats() | length > 1 %}
+            <div class="format-select">
+                <label>Delivery Format:</label>
+                <div class="format-options">
+                    {% for fmt in product.available_formats() %}
+                    <label class="option">
+                        <input type="radio" name="format" value="{{ fmt }}" {{ 'checked' if loop.first else '' }}>
+                        {{ fmt }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <input type="hidden" name="format" value="{{ product.available_formats()[0] }}">
+            <p class="format-tag">Delivered as: {{ product.available_formats()[0] }}</p>
+            {% endif %}
+            <button type="submit" class="btn-primary">Add to Cart</button>
+        </form>
+        {% endif %}
+
+        <div class="shipping-note">
+            <p>🚚 Free delivery within Lahore</p>
+            <p>Outside Lahore, shipping charges may apply.</p>
+            <p>You'll get a WhatsApp confirmation right after ordering, and another message when your parcel is dispatched.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

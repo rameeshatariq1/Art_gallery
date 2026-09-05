@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Custom Order — Mishi Creates{% endblock %}
+
+{% block content %}
+<section class="custom-order-page">
+    <h1>Request a Custom Piece</h1>
+    <p class="intro">Have something specific in mind — a name in calligraphy, a Quranic verse, a portrait, or a dreamy acrylic scene? Tell me about it below, and I'll reach out on WhatsApp to discuss details and pricing.</p>
+
+    <form method="POST" class="custom-order-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">Phone Number (WhatsApp)</label>
+        <input type="tel" id="phone" name="phone" placeholder="03XXXXXXXXX" required>
+
+        <label for="category">Type of Art</label>
+        <select id="category" name="category" required>
+            {% for cat in categories %}
+            <option value="{{ cat }}">{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="preferred_format">Preferred Format</label>
+        <select id="preferred_format" name="preferred_format" required>
+            <option value="Canvas">Canvas</option>
+            <option value="Frame">Frame</option>
+        </select>
+
+        <label for="description">Describe what you want</label>
+        <textarea id="description" name="description" rows="5" placeholder="e.g. Ayat-ul-Kursi in thuluth script, dark green background, 16x20 inch" required></textarea>
+
+        <button type="submit" class="btn-primary">Send Request</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Mishi Creates — Original Artwork & Calligraphy{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <h1>Calligraphy & art<br>with <em>soul</em>.</h1>
+        <p class="hero-sub">Original calligraphy, Islamic art, and acrylic paintings — handmade and delivered to your door, free within Lahore.</p>
+        <a href="{{ url_for('shop') }}" class="btn-primary">Browse the Shop</a>
+        <a href="{{ url_for('custom_order') }}" class="btn-secondary">Request a Custom Piece</a>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/img28.jpeg') }}" alt="Featured Artwork">
+        <!-- <div class="hero-placeholder">
+            <p>Your Featured Artwork</p>
+        </div> -->
+    </div>
+</section>
+
+<!-- <section class="video-showcase">
+    <h2>Watch the Process</h2>
+    <div class="video-grid">
+        <video controls poster="{{ url_for('static', filename='images/video-poster-1.jpg') }}">
+            <source src="{{ url_for('static', filename='videos/best-artwork.mp4') }}" type="video/mp4">
+        </video>
+        <video controls poster="{{ url_for('static', filename='images/video-poster-2.jpg') }}">
+            <source src="{{ url_for('static', filename='videos/calligraphy-process.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+</section> -->
+
+{% if featured %}
+<section class="featured">
+    <h2>Recently Added</h2>
+    <div class="product-grid">
+        {% for product in featured %}
+        <div class="product-card">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                <img src="{{ url_for('static', filename='images/' + product.primary_image()) }}" alt="{{ product.name }}">
+            </a>
+            <div class="product-info">
+                <p class="category-tag">{{ product.category }}</p>
+                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                <p class="price">Rs. {{ product.price }}</p>
+                <p class="format-tag">{{ product.available_formats() | join(' / ') }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if reviews %}
+<section class="reviews-showcase" id="reviews">
+    <h2 style="text-align:center;">Loved by collectors <em>across Pakistan</em>.</h2>
+    <div class="marquee">
+        <div class="marquee-track">
+            {% for r in reviews %}
+            <div class="review-card">
+                <p class="stars">{{ '★' * r.rating }}{{ '☆' * (5 - r.rating) }}</p>
+                <p class="review-text">"{{ r.review_text }}"</p>
+                <p class="review-name">— {{ r.name }}</p>
+            </div>
+            {% endfor %}
+            {% for r in reviews %}
+            <div class="review-card" aria-hidden="true">
+                <p class="stars">{{ '★' * r.rating }}{{ '☆' * (5 - r.rating) }}</p>
+                <p class="review-text">"{{ r.review_text }}"</p>
+                <p class="review-name">— {{ r.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="review-form-section" id="review-form">
+    <div class="review-form-inner">
+        <h2>Share your <em>experience</em>.</h2>
+        <p class="review-form-sub">Did a piece move you? We would love to hear your thoughts. Reviews are published after admin approval to ensure authenticity.</p>
+
+        <form method="POST" action="{{ url_for('submit_review') }}" class="review-form">
+            <label for="rname">Name</label>
+            <input type="text" id="rname" name="name" placeholder="How should we call you?" required>
+
+            <label for="remail">Email (optional)</label>
+            <input type="email" id="remail" name="email" placeholder="For our eyes only">
+
+            <label>Rating</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" checked><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+            </div>
+
+            <label for="rtext">Your Review</label>
+            <textarea id="rtext" name="review_text" rows="4" placeholder="Tell us about the piece and your experience with the delivery." required></textarea>
+
+            <button type="submit" class="btn-primary">Submit Review</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

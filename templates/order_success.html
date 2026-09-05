@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Order Placed — Mishi Creates{% endblock %}
+
+{% block content %}
+<section class="order-success">
+    <h1>Thank you, {{ order.customer_name }}!</h1>
+    <p class="order-id">Order #{{ order.id }} has been placed.</p>
+
+    <div class="next-steps">
+        <h2>What happens next:</h2>
+        <ol>
+            <li>You'll receive a confirmation message on WhatsApp shortly at your provided number.</li>
+            <li>Your artwork will be carefully packed and handed to courier.</li>
+            <li>You'll be informed on WhatsApp once your parcel is dispatched.</li>
+            <li>Pay in cash when it arrives at your door.</li>
+        </ol>
+    </div>
+
+    <a href="https://wa.me/{{ whatsapp }}" target="_blank" class="btn-primary">Message us on WhatsApp</a>
+    <a href="{{ url_for('shop') }}" class="btn-secondary">Continue Shopping</a>
+</section>
+{% endblock %}

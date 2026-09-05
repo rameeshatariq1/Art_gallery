@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Checkout — Mishi Creates{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Checkout</h1>
+    <p>Cash on Delivery only — pay when your artwork arrives.</p>
+</section>
+
+<div class="checkout-wrap">
+    <div class="checkout-summary">
+        <h2>Order Summary</h2>
+        {% for item in items %}
+        <div class="summary-row">
+            <span>{{ item.product.name }} [{{ item.format }}] x{{ item.qty }}</span>
+            <span>Rs. {{ item.subtotal }}</span>
+        </div>
+        {% endfor %}
+        <div class="summary-row total-row">
+            <span>Total</span>
+            <span>Rs. {{ total }}</span>
+        </div>
+    </div>
+
+    <form method="POST" class="checkout-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">Phone Number (WhatsApp)</label>
+        <input type="tel" id="phone" name="phone" placeholder="03XXXXXXXXX" required>
+
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="e.g. Lahore" required>
+
+        <label for="address">Full Delivery Address</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+
+        <p class="payment-note">💰 Payment Method: <strong>Cash on Delivery</strong></p>
+        <p class="shipping-note-small">Free delivery within Lahore. Outside Lahore, shipping charges may apply — you'll be informed on WhatsApp before dispatch.</p>
+
+        <button type="submit" class="btn-primary">Place Order</button>
+    </form>
+</div>
+{% endblock %}

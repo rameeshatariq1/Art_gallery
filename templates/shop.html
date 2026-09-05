@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Shop — Mishi Creates{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>The Shop</h1>
+    <p>Every piece is one-of-a-kind. Once it's sold, it's gone.</p>
+</section>
+
+<div class="category-nav">
+    <a href="{{ url_for('shop') }}" class="category-pill {{ 'active' if not active_category else '' }}">All</a>
+    {% for cat in categories %}
+    <a href="{{ url_for('shop', category=cat) }}" class="category-pill {{ 'active' if active_category == cat else '' }}">{{ cat }}</a>
+    {% endfor %}
+</div>
+
+<section class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+            <img src="{{ url_for('static', filename='images/' + product.primary_image()) }}" alt="{{ product.name }}">
+        </a>
+        <div class="product-info">
+            <p class="category-tag">{{ product.category }}</p>
+            <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+            <p class="size">{{ product.size }}</p>
+            <p class="price">Rs. {{ product.price }}</p>
+            <p class="format-tag">Available: {{ product.available_formats() | join(' / ') }}</p>
+            {% if product.is_available %}
+                <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+                    {% if product.available_formats() | length > 1 %}
+                    <input type="hidden" name="format" value="{{ product.available_formats()[0] }}">
+                    {% endif %}
+                    <button type="submit" class="btn-secondary">Add to Cart</button>
+                </form>
+                <p class="format-hint" style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">
+                    {% if product.available_formats() | length > 1 %}Default: {{ product.available_formats()[0] }} — choose format on product page{% endif %}
+                </p>
+            {% else %}
+                <p class="sold-out">Sold Out</p>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <p>No artwork in this category yet.</p>
+    {% endfor %}
+</section>
+{% endblock %}
