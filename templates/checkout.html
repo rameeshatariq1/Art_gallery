@@ -27,7 +27,12 @@
         <input type="text" id="name" name="name" required>
 
         <label for="phone">Phone Number (WhatsApp)</label>
-        <input type="tel" id="phone" name="phone" placeholder="03XXXXXXXXX" required>
+        <input type="tel" id="phone" name="phone"
+           placeholder="03XXXXXXXXX"
+           pattern="03[0-9]{9}"
+           title="Enter number without Spaces and extra dashes"
+           maxlength="11"
+               required>
 
         <label for="city">City</label>
         <input type="text" id="city" name="city" placeholder="e.g. Lahore" required>
